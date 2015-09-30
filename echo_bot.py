@@ -9,6 +9,7 @@ from StringIO import StringIO
 from image_paths import image_dictionary
 from zendesk_call import *
 from flask import Flask
+import os
 
 
 # bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
