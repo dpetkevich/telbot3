@@ -12,8 +12,8 @@ from flask import Flask
 import os
 
 
-bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
-# bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
+# bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
+bot = telebot.AsyncTeleBot("125504072:AAGkqPRClpw4nT--EmYhq02e_BpF2ty4WjY")
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
