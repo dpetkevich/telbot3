@@ -8,29 +8,41 @@ from io import BytesIO
 from StringIO import StringIO
 from image_paths import image_dictionary
 from zendesk_call import *
+from flask import Flask
 
 
 # bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
-bot = telebot.AsyncTeleBot(ENV['TELEGRAM_BOT_TOKEN'])
+bot = telebot.AsyncTeleBot('125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM')
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
 botname = 'benjamin'
 
+app = Flask(__name__)
 
-
-@bot.message_handler(commands=['start', 'help'])
-def send_welcome(message):
-    bot.reply_to(message, "Hody, how are you doing?")
-
+# @bot.message_handler(commands=['start', 'help'])
+# def send_welcome(message):
+#     bot.reply_to(message, "Hody, how are you doing?")
+@app.route("/")
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
 
+	print "message"
+	print message
 	client = MongoClient()
 	db = client.main
 	users = db.users
 
 	possible_user = users.find({ "tid" : message.chat.id })
+
+	print "chat id"
+	print possible_user[0].get('tid')
+	print"session_id"
+	print possible_user[0].get('session_id')
+	print "client_name"
+	print possible_user[0].get('client_name')
+
+
 	
 
 
@@ -38,7 +50,7 @@ def echo_all(message):
 		# session_id = str(message.chat).split(':')[0]
 		# client_name = str(message.chat).split(':')[1]
 
-		query = "https://aiaas.pandorabots.com/atalk/" + str(app_id).encode('utf-8') + "/" + str(botname).encode('utf-8') 
+		query = "https://aiaas.pandorabots.com/atalk/" + str(app_id) + "/" + str(botname) 
 		payload1 = {
 		'user_key' : str(user_key).encode('utf-8'),
 		"input": str(message.text).encode('utf-8')
@@ -57,7 +69,7 @@ def echo_all(message):
 
 		client_name = possible_user[0].get('client_name')
 
-		query = "https://aiaas.pandorabots.com/atalk/" + str(app_id).encode('utf-8') + "/" + str(botname).encode('utf-8')
+		query = "https://aiaas.pandorabots.com/atalk/" + str(app_id) + "/" + str(botname)
 
 		payload1 = {
 		'user_key' : str(user_key).encode('utf-8'),
@@ -75,7 +87,9 @@ def echo_all(message):
 	
 
 	bot_response = full_bot_response["responses"][0]
+	print "bot resposne is"
 
+	print bot_response
 	soup = BeautifulSoup(bot_response, "lxml")
     # partition = bot_response.partition('<img')
 
