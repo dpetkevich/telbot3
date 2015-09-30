@@ -10,7 +10,8 @@ from image_paths import image_dictionary
 from zendesk_call import *
 
 
-bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
+# bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
+bot = telebot.AsyncTeleBot(ENV['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
