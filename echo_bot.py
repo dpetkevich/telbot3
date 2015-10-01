@@ -151,6 +151,8 @@ def index(message):
 
 	callZendesk(message.chat, message.text)
 
+
+
 	# bot.polling()
 
 
@@ -161,6 +163,10 @@ def hello():
 
 
 	message_json = request.json['message']
+
+	db.messages.insert_one{
+		request.json
+	}
 	message = types.Message.de_json(message_json)
 
 	messages = [message]
