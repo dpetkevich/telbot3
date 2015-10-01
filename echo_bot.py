@@ -1,4 +1,5 @@
 import telebot
+from pyTelegramBotAPI import JsonDeserializable
 import requests
 from pymongo import MongoClient
 from bs4 import BeautifulSoup
@@ -10,6 +11,7 @@ from image_paths import image_dictionary
 from zendesk_call import *
 from flask import Flask, redirect, url_for, request
 import os
+from 
 
 
 bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
@@ -157,8 +159,9 @@ def index(message):
 def hello():
 
 	print request.json
-	message = request.json['message']
+	message_json = request.json['message']
 	print message
+	message = de_json('message',message_json)
 	bot.process_new_messages(message) 
 	return "Works"
 
