@@ -14,7 +14,7 @@ import os
 
 
 
-bot = telebot.AsyncTeleBot("92161996:AAHKneZA0oHz3iGRiSLY0DczLlp90XCAKB4")
+bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
