@@ -162,7 +162,7 @@ def hello():
 
 
 	message_json = request.json['message']
-	message = types.Message(message_json)
+	message = types.Message.de_json(message_json)
 
 	print message
 
