@@ -19,6 +19,9 @@ host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
 botname = 'benjamin'
+client = MongoClient('mongodb://heroku_qvt5db7v:h93382meaafa953fnu53blnu2r@ds045252.mongolab.com:45252/heroku_qvt5db7v')
+db = client.get_default_database()
+
 
 app = Flask(__name__)
 
@@ -31,9 +34,7 @@ def index(message):
 	print "message"
 	print message
 	# client = MongoClient(os.environ['MONGODB_TOKEN'])
-	client = MongoClient('mongodb://heroku_qvt5db7v:h93382meaafa953fnu53blnu2r@ds045252.mongolab.com:45252/heroku_qvt5db7v')
 
-	db = client.get_default_database()
 	users = db.users
 
 	possible_user = users.find({ "tid" : message.chat.id })
@@ -164,9 +165,9 @@ def hello():
 
 	message_json = request.json['message']
 
-	db.messages.insert_one{
-		request.json
-	}
+	db.messages.insert_one(request.json)
+		
+
 	message = types.Message.de_json(message_json)
 
 	messages = [message]
