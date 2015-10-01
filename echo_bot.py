@@ -36,12 +36,12 @@ def echo_all(message):
 
 	possible_user = users.find({ "tid" : message.chat.id })
 
-	print "chat id"
-	print possible_user[0].get('tid')
-	print"session_id"
-	print possible_user[0].get('session_id')
-	print "client_name"
-	print possible_user[0].get('client_name')
+	# print "chat id"
+	# print possible_user[0].get('tid')
+	# print"session_id"
+	# print possible_user[0].get('session_id')
+	# print "client_name"
+	# print possible_user[0].get('client_name')
 
 
 	
