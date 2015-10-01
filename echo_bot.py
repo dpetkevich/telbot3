@@ -153,10 +153,11 @@ def index(message):
 	bot.polling()
 
 
-@app.route("/boristheanimal5423")
+@app.route("/boristheanimal5423", methods=['GET','POST'])
 def hello():
 	
 	print request.values
+	process_new_messages(messages) 
 	return True
 
 
