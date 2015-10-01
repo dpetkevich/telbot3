@@ -153,11 +153,11 @@ def index(message):
 	bot.polling()
 
 
-@app.route("/")
+@app.route("/boristheanimal5423")
 def hello():
-	bot.polling()
-
-	return redirect('/')
+	
+	print request.values
+	return True
 
 
 if __name__ == "__main__":
