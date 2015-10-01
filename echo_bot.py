@@ -155,12 +155,11 @@ def index(message):
 
 @app.route("/boristheanimal5423", methods=['GET','POST'])
 def hello():
-	
-	print request.values
-	print request.data
+
 	print request.json
-	print request.get_json
-	# bot.process_new_messages(messages) 
+	message = request.json['message']
+	print message
+	bot.process_new_messages(message) 
 	return "Works"
 
 
