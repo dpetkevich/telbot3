@@ -164,9 +164,10 @@ def hello():
 	message_json = request.json['message']
 	message = types.Message.de_json(message_json)
 
+	messages = [message]
 	print message
 
-	bot.process_new_messages(message) 
+	bot.process_new_messages(messages) 
 	return "Works"
 
 
