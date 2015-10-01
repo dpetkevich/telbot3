@@ -8,7 +8,7 @@ from io import BytesIO
 from StringIO import StringIO
 from image_paths import image_dictionary
 from zendesk_call import *
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, request
 import os
 
 
