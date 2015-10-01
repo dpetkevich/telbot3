@@ -1,4 +1,5 @@
-import telebot 
+from telebot import types
+import telebot
 import requests
 from pymongo import MongoClient
 from bs4 import BeautifulSoup
@@ -158,8 +159,10 @@ def index(message):
 def hello():
 
 	print request.json
+
+
 	message_json = request.json['message']
-	message = telebot.Message(message_json)
+	message = types.Message(message_json)
 
 	print message
 
