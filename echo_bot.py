@@ -157,8 +157,10 @@ def index(message):
 def hello():
 	
 	print request.values
+	print request.data
+	print request.json
 	print request.get_json
-	bot.process_new_messages(messages) 
+	# bot.process_new_messages(messages) 
 	return "Works"
 
 
