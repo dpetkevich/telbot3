@@ -8,7 +8,7 @@ from io import BytesIO
 from StringIO import StringIO
 from image_paths import image_dictionary
 from zendesk_call import *
-from flask import Flask
+from flask import Flask, redirect
 import os
 
 
@@ -24,7 +24,7 @@ app = Flask(__name__)
 # def send_welcome(message):
 #     bot.reply_to(message, "Hody, how are you doing?")
 @bot.message_handler(func=lambda message: True)
-def echo_all(message):
+def index(message):
 
 	print "message"
 	print message
@@ -151,10 +151,12 @@ def echo_all(message):
 	callZendesk(message.chat, message.text)
 
 
-
 @app.route("/")
 def hello():
 	bot.polling()
+
+	return redirect(url_for('index'))
+
 
 if __name__ == "__main__":
     app.run()
