@@ -92,7 +92,6 @@ def index(message):
 	bot_response = full_bot_response["responses"][0]
 	print "bot resposne is"
 
-	print bot_response
 	soup = BeautifulSoup(bot_response, "lxml")
     # partition = bot_response.partition('<img')
 
