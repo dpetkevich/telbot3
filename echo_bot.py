@@ -31,7 +31,7 @@ def echo_all(message):
 	# client = MongoClient(os.environ['MONGODB_TOKEN'])
 	client = MongoClient('mongodb://heroku_qvt5db7v:h93382meaafa953fnu53blnu2r@ds045252.mongolab.com:45252/heroku_qvt5db7v')
 
-	db = client.main
+	db = client.get_default_database()
 	users = db.users
 
 	possible_user = users.find({ "tid" : message.chat.id })
