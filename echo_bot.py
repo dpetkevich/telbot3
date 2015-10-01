@@ -150,15 +150,16 @@ def index(message):
 
 	callZendesk(message.chat, message.text)
 
-	bot.polling()
+	# bot.polling()
 
 
 @app.route("/boristheanimal5423", methods=['GET','POST'])
 def hello():
 	
 	print request.values
-	process_new_messages(messages) 
-	return True
+	print request.get_json
+	bot.process_new_messages(messages) 
+	return "Works"
 
 
 if __name__ == "__main__":
