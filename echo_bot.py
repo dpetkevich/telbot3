@@ -157,7 +157,7 @@ def index(message):
 def hello():
 	bot.polling()
 
-	return redirect(url_for('index'))
+	return redirect(url_for('hello'))
 
 
 if __name__ == "__main__":
