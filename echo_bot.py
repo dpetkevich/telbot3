@@ -10,7 +10,7 @@ from image_paths import image_dictionary
 from zendesk_call import *
 from flask import Flask, redirect, url_for, request
 import os
-from 
+ 
 
 
 bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
