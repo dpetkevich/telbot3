@@ -35,7 +35,7 @@ def createZendeskTicket(chat, message):
 	data = {
 	    "ticket": {
 	        "requester": {
-	            "name" : chat.first_name + " " + chat.last_name,
+	            "name" : str(chat.first_name) + " " + str(chat.last_name),
 	            'external_id' : str(chat.id),
 	            "details" : 'telegram'
 	            
