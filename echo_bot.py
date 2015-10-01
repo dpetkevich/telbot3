@@ -14,7 +14,7 @@ import os
 
 
 
-bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
+bot = telebot.AsyncTeleBot("92161996:AAHKneZA0oHz3iGRiSLY0DczLlp90XCAKB4")
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
@@ -154,7 +154,7 @@ def index(message):
 	# bot.polling()
 
 
-@app.route("/boristheanimal5423", methods=['GET','POST'])
+@app.route("/boristheanimal5423", methods=['POST'])
 def hello():
 
 	print request.json
