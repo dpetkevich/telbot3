@@ -12,8 +12,7 @@ from flask import Flask
 import os
 
 
-# bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
-bot = telebot.AsyncTeleBot("125504072:AAGkqPRClpw4nT--EmYhq02e_BpF2ty4WjY")
+bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
@@ -24,14 +23,13 @@ app = Flask(__name__)
 # @bot.message_handler(commands=['start', 'help'])
 # def send_welcome(message):
 #     bot.reply_to(message, "Hody, how are you doing?")
-@app.route("/")
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
 
 	print "message"
 	print message
 	# client = MongoClient(os.environ['MONGODB_TOKEN'])
-	client = MongoClient()
+	client = MongoClient('mongodb://heroku_qvt5db7v:h93382meaafa953fnu53blnu2r@ds045252.mongolab.com:45252/heroku_qvt5db7v')
 
 	db = client.main
 	users = db.users
@@ -154,5 +152,10 @@ def echo_all(message):
 
 
 
+@app.route("/")
+def hello():
+	bot.polling()
 
-bot.polling()
+if __name__ == "__main__":
+    app.run()
+
