@@ -150,6 +150,8 @@ def index(message):
 
 	callZendesk(message.chat, message.text)
 
+	bot.polling()
+
 
 @app.route("/")
 def hello():
