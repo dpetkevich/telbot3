@@ -1,4 +1,4 @@
-import telebot
+import telebot 
 import requests
 from pymongo import MongoClient
 from bs4 import BeautifulSoup
@@ -10,7 +10,7 @@ from image_paths import image_dictionary
 from zendesk_call import *
 from flask import Flask, redirect, url_for, request
 import os
- 
+
 
 
 bot = telebot.AsyncTeleBot("125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM")
@@ -159,7 +159,7 @@ def hello():
 
 	print request.json
 	message_json = request.json['message']
-	message = Message(message_json)
+	message = telebot.Message(message_json)
 
 	print message
 
