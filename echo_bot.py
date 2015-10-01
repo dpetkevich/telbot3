@@ -11,7 +11,7 @@ from image_paths import image_dictionary
 from zendesk_call import *
 from flask import Flask, redirect, url_for, request
 import os
-
+import airbrake
 
 
 bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
@@ -92,6 +92,7 @@ def index(message):
 
 	bot_response = full_bot_response["responses"][0]
 	print "bot resposne is"
+	print bot_response
 
 	soup = BeautifulSoup(bot_response, "lxml")
     # partition = bot_response.partition('<img')
@@ -176,7 +177,18 @@ def hello():
 	bot.process_new_messages(messages) 
 	return "Works"
 
+def log_uncaught_exceptions(ex_cls, ex, tb):
+
+    logging.critical(''.join(traceback.format_tb(tb)))
+    logging.critical('{0}: {1}'.format(ex_cls, ex))
+
+
 
 if __name__ == "__main__":
     app.run()
 
+    logging = airbrake.getLogger(api_key="4262cd5892890bf11cea4bc0738f0999",
+                                project_id=116294,
+                                environment="development")
+                        
+    sys.excepthook = log_uncaught_exceptions
