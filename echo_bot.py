@@ -25,7 +25,7 @@ app = Flask(__name__)
 # @bot.message_handler(commands=['start', 'help'])
 # def send_welcome(message):
 #     bot.reply_to(message, "Hody, how are you doing?")
-@bot.message_handler(func=lambda message: True)
+@bot.message_handler(func=lambda message: True, commands=['start', 'help'])
 def index(message):
 
 	print "message"
