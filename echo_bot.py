@@ -1,5 +1,4 @@
 import telebot
-from pyTelegramBotAPI import JsonDeserializable
 import requests
 from pymongo import MongoClient
 from bs4 import BeautifulSoup
@@ -160,8 +159,10 @@ def hello():
 
 	print request.json
 	message_json = request.json['message']
+	message = Message(message_json)
+
 	print message
-	message = de_json('message',message_json)
+
 	bot.process_new_messages(message) 
 	return "Works"
 
