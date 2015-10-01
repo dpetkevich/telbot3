@@ -8,7 +8,7 @@ from io import BytesIO
 from StringIO import StringIO
 from image_paths import image_dictionary
 from zendesk_call import *
-from flask import Flask, redirect
+from flask import Flask, redirect, url_for
 import os
 
 
@@ -157,7 +157,7 @@ def index(message):
 def hello():
 	bot.polling()
 
-	return redirect(url_for('hello'))
+	return redirect('/')
 
 
 if __name__ == "__main__":
