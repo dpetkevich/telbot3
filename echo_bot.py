@@ -187,7 +187,7 @@ def log_uncaught_exceptions(ex_cls, ex, tb):
 if __name__ == "__main__":
     app.run()
 
-    logging = airbrake.getLogger(api_key="4262cd5892890bf11cea4bc0738f0999",
+    logging = airbrake.getLogger(api_key= os.environ['AIRBRAKE_API_KEY'],
                                 project_id=116294,
                                 environment="development")
                         
