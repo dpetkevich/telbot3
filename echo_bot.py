@@ -27,34 +27,14 @@ db = client.get_default_database()
 
 app = Flask(__name__)
 
-# if not app.debug:
-#     mail_handler = airbrake.AirbrakeHandler()
-#     app.logger.addHandler(mail_handler)
-#     print 'mail'
-#     print mail_handler
-
-# logging = airbrake.getLogger(api_key=os.environ['AIRBRAKE_API_KEY'], project_id=os.environ['AIRBRAKE_PROJECT_ID'], environment="development")
-                        
-# logger = airbrake.getLogger()
-
-
-
-
-# try:
-#     1/0
-# except Exception:
-# 	yourlogger.exception('big problem')
-# 	yourlogger.
-
-
-# logger = airbrake.getLogger(api_key=os.environ['AIRBRAKE_API_KEY'], project_id=os.environ['AIRBRAKE_PROJECT_ID'])
 # yourlogger = logging.getLogger(__name__)
-# print 'log'
-# print yourlogger
 # yourlogger.addHandler(airbrake.AirbrakeHandler())
-# @bot.message_handler(commands=['start', 'help'])
-# def send_welcome(message):
-#     bot.reply_to(message, "Hody, how are you doing?")
+
+if not app.debug:
+    mail_handler = airbrake.AirbrakeHandler()
+    app.logger.addHandler(mail_handler)
+
+
 @bot.message_handler(content_types=['text'])
 def index(message):
 
@@ -66,14 +46,7 @@ def index(message):
 
 	possible_user = users.find({ "tid" : message.chat.id })
 
-	# print "chat id"
-	# print possible_user[0].get('tid')
-	# print"session_id"
-	# print possible_user[0].get('session_id')
-	# print "client_name"
-	# print possible_user[0].get('client_name')
-
-
+	
 	
 
 
@@ -147,31 +120,6 @@ def index(message):
 		bot.send_document(message.chat.id, image_dictionary.get(image_portion))
 
 
-		# string_buffer = BytesIO()
-		# string_buffer.write(response.content)
-		# img = Image.open(string_buffer)
-
-		# output = BytesIO()
-		# img.save(output, format='GIF')
-		# output.seek(0)
-
-		# url = 'https://api.telegram.org/bot125944210:AAElCWTL82MdbKQGxk8ZPvm-yIGe4HkasDM/sendDocument'
-		# # files = {'document': ('somefilename.gif', output, 'image/GIF')}
-
-		# files = {'document': ('somefilename.gif', open('./introowl.gif'), 'image/GIF')}
-
-		# payload = {'chat_id': message.chat.id}
-
-		# # payload1 = { 
-		# # 	'document' : ('newowl.gif', output, 'image/GIF'),
-		# # 	"chat_id" : message.chat.id
-		# # }
-
-		# headers = {'content-type': 'multipart/form-data'}
-
-		# r = requests.post(url, headers = headers, data = payload, files = files )
-		# print 'hihi'
-		# print r.json()
 
 	else:
 
@@ -225,26 +173,22 @@ def hello():
 	return "Works"
 
 
+@app.errorhandler(Exception)
+def all_exception_handler(error):
+	print 'error'
+	print error
+   	return 'Error', 500
+
+
 # @app.errorhandler(Exception)
-# def all_exception_handler(error):
-# 	print 'error'
-# 	print error
-#    	return 'Error', 500
-
-
-# def log_exception(error):
-# 	print 'error is'
-# 	print error
-# 	handler = AirbrakeErrorHandler(api_key=os.environ['AIRBRAKE_API_KEY'], env_name=ENV, request=request)
-# 	gevent.spawn(handler.emit, error, sys.exc_info())
-
-# got_request_exception.connect(log_exception, app)
+# def internal_error():
+# 	print 'yayayayay'
+	
 
 if __name__ == "__main__":
 	app.run()
 
-	yourlogger = logging.getLogger(__name__)
-	yourlogger.addHandler(airbrake.AirbrakeHandler())
+	
 
 
    
