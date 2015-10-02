@@ -9,12 +9,13 @@ from io import BytesIO
 from StringIO import StringIO
 from image_paths import image_dictionary
 from zendesk_call import *
-from flask import Flask, redirect, url_for, request, got_request_exception
+from flask import Flask, redirect, url_for, request, got_request_exception, logging
 import os
-from airbrake.airbrake import AirbrakeErrorHandler
 import gevent
 import sys
 from blinker import *
+from logging import getLogger
+import airbrake
 
 bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
@@ -26,8 +27,19 @@ db = client.get_default_database()
 
 
 app = Flask(__name__)
-ENV = ('ENV' in os.environ and os.environ['ENV']) or 'prod'
 
+if not app.debug:
+    mail_handler = airbrake.AirbrakeHandler()
+    app.logger.addHandler(mail_handler)
+
+
+
+
+# logger = airbrake.getLogger(api_key=os.environ['AIRBRAKE_API_KEY'], project_id=os.environ['AIRBRAKE_PROJECT_ID'])
+# yourlogger = logging.getLogger(__name__)
+# print 'log'
+# print yourlogger
+# yourlogger.addHandler(airbrake.AirbrakeHandler())
 # @bot.message_handler(commands=['start', 'help'])
 # def send_welcome(message):
 #     bot.reply_to(message, "Hody, how are you doing?")
@@ -88,14 +100,14 @@ def index(message):
 
 		r=requests.post(query, data = payload1)
 
-		full_bot_response = r.json()
+		full_bt_response = r.json()
 		
 
 	
 
 	bot_response = full_bot_response["responses"][0]
 	print "bot resposne is"
-	print bot_response
+	# print bot_response
 
 	soup = BeautifulSoup(bot_response, "lxml")
     # partition = bot_response.partition('<img')
@@ -161,18 +173,38 @@ def index(message):
 	# bot.polling()
 
 
-@app.route("/boristheanimal5423", methods=['POST'])
+@app.route("/boristheanimal5423", methods=['GET', 'POST'])
 def hello():
-
 	print request.json
 
-
-	message_json = request.json['message']
-
-	db.messages.insert_one(request.json)
-		
-
-	message = types.Message.de_json(message_json)
+	if request.json == None:
+		message_json = {
+						    "message": {
+						        "from": {
+						            "username": "dpetkevich",
+						            "id": 52132249,
+						            "first_name": "Dan",
+						            "last_name": "Petkevich"
+						        },
+						        "date": 1443741883,
+						        "chat": {
+						            "username": "dpetkevich",
+						            "id": 52132249,
+						            "first_name": "Dan",
+						            "last_name": "Petkevich"
+						        },
+						        "message_id": 21,
+						        "text": "Hi"
+						    },
+						    "update_id": 103067769
+						}
+		print json.dumps(message_json)
+		print message_json['message']
+		message = types.Message.de_json(message_json['message'])
+	else:
+		message_json = request.json['message']
+		db.messages.insert_one(request.json)
+		message = types.Message.de_json(message_json)
 
 	messages = [message]
 	print message
@@ -180,12 +212,21 @@ def hello():
 	bot.process_new_messages(messages) 
 	return "Works"
 
-@app.errorhandler(Exception)
-def log_exception(error):
-    handler = AirbrakeErrorHandler(api_key=os.environ['AIRBRAKE_API_KEY'], env_name=ENV, request=request)
-    gevent.spawn(handler.emit, error, sys.exc_info())
 
-got_request_exception.connect(log_exception, app)
+# @app.errorhandler(Exception)
+# def all_exception_handler(error):
+# 	print 'error'
+# 	print error
+#    	return 'Error', 500
+
+
+# def log_exception(error):
+# 	print 'error is'
+# 	print error
+# 	handler = AirbrakeErrorHandler(api_key=os.environ['AIRBRAKE_API_KEY'], env_name=ENV, request=request)
+# 	gevent.spawn(handler.emit, error, sys.exc_info())
+
+# got_request_exception.connect(log_exception, app)
 
 if __name__ == "__main__":
     app.run()
