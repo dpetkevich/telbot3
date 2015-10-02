@@ -184,11 +184,10 @@ def log_exception(error):
     handler = AirbrakeErrorHandler(api_key=os.environ['AIRBRAKE_API_KEY'], env_name=ENV, request=request)
     gevent.spawn(handler.emit, error, sys.exc_info())
 
-# got_request_exception.connect(log_exception, app)
+got_request_exception.connect(log_exception, app)
 
 if __name__ == "__main__":
     app.run()
 
-    got_request_exception.connect(log_exception, app)
 
    
