@@ -11,9 +11,7 @@ from image_paths import image_dictionary
 from zendesk_call import *
 from flask import Flask, redirect, url_for, request, got_request_exception, logging
 import os
-import gevent
 import sys
-from blinker import *
 from logging import getLogger
 import airbrake
 import traceback
