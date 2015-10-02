@@ -180,6 +180,7 @@ def hello():
 	bot.process_new_messages(messages) 
 	return "Works"
 
+@app.errorhandler(Exception)
 def log_exception(error):
     handler = AirbrakeErrorHandler(api_key=os.environ['AIRBRAKE_API_KEY'], env_name=ENV, request=request)
     gevent.spawn(handler.emit, error, sys.exc_info())
