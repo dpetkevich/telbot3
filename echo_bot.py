@@ -16,6 +16,7 @@ import sys
 from blinker import *
 from logging import getLogger
 import airbrake
+import traceback
 
 bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
@@ -28,11 +29,24 @@ db = client.get_default_database()
 
 app = Flask(__name__)
 
-if not app.debug:
-    mail_handler = airbrake.AirbrakeHandler()
-    app.logger.addHandler(mail_handler)
+# if not app.debug:
+#     mail_handler = airbrake.AirbrakeHandler()
+#     app.logger.addHandler(mail_handler)
+#     print 'mail'
+#     print mail_handler
+
+# logging = airbrake.getLogger(api_key=os.environ['AIRBRAKE_API_KEY'], project_id=os.environ['AIRBRAKE_PROJECT_ID'], environment="development")
+                        
+# logger = airbrake.getLogger()
 
 
+
+
+# try:
+#     1/0
+# except Exception:
+# 	yourlogger.exception('big problem')
+# 	yourlogger.
 
 
 # logger = airbrake.getLogger(api_key=os.environ['AIRBRAKE_API_KEY'], project_id=os.environ['AIRBRAKE_PROJECT_ID'])
@@ -229,7 +243,10 @@ def hello():
 # got_request_exception.connect(log_exception, app)
 
 if __name__ == "__main__":
-    app.run()
+	app.run()
+
+	yourlogger = logging.getLogger(__name__)
+	yourlogger.addHandler(airbrake.AirbrakeHandler())
 
 
    
