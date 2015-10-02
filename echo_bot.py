@@ -9,10 +9,12 @@ from io import BytesIO
 from StringIO import StringIO
 from image_paths import image_dictionary
 from zendesk_call import *
-from flask import Flask, redirect, url_for, request
+from flask import Flask, redirect, url_for, request, got_request_exception
 import os
-import airbrake
-
+from airbrake.airbrake import AirbrakeErrorHandler
+import gevent
+import sys
+from blinker import *
 
 bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
@@ -24,6 +26,7 @@ db = client.get_default_database()
 
 
 app = Flask(__name__)
+ENV = ('ENV' in os.environ and os.environ['ENV']) or 'prod'
 
 # @bot.message_handler(commands=['start', 'help'])
 # def send_welcome(message):
@@ -177,18 +180,13 @@ def hello():
 	bot.process_new_messages(messages) 
 	return "Works"
 
-def log_uncaught_exceptions(ex_cls, ex, tb):
+def log_exception(error):
+    handler = AirbrakeErrorHandler(api_key=os.environ['AIRBRAKE_API_KEY'], env_name=ENV, request=request)
+    gevent.spawn(handler.emit, error, sys.exc_info())
 
-    logging.critical(''.join(traceback.format_tb(tb)))
-    logging.critical('{0}: {1}'.format(ex_cls, ex))
-
-
+got_request_exception.connect(log_exception, app)
 
 if __name__ == "__main__":
     app.run()
 
-    logging = airbrake.getLogger(api_key= os.environ['AIRBRAKE_API_KEY'],
-                                project_id=116294,
-                                environment="development")
-                        
-    sys.excepthook = log_uncaught_exceptions
+   
