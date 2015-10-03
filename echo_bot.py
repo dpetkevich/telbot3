@@ -87,7 +87,7 @@ def index(message):
 
 			r=requests.post(query, data = payload1)
 
-			full_bt_response = r.json()
+			full_bot_response = r.json()
 			
 
 		
