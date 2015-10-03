@@ -119,14 +119,16 @@ def index(message):
 
 			print image_dictionary.get(image_portion) 
 
-			bot.reply_to(message, text_portion)
+			# bot.reply_to(message, text_portion)
+			bot.send_message(message.chat.id, text_portion)
 			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
 
 
 
 		else:
 
-			bot.reply_to(message, soup.text)
+			bot.send_message(message.chat.id, soup.text)
+
 
 
 		callZendesk(message.chat, message.text)
