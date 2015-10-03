@@ -12,9 +12,12 @@ from zendesk_call import *
 from flask import Flask, redirect, url_for, request, got_request_exception, logging
 import os
 import sys
-from logging import getLogger
-import airbrake
+from logging.handlers import SMTPHandler, RotatingFileHandler
+import logging
 import traceback
+import bugsnag
+from bugsnag.flask import handle_exceptions
+
 
 bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
@@ -23,172 +26,172 @@ app_id = '1409612152298'
 botname = 'benjamin'
 client = MongoClient('mongodb://heroku_qvt5db7v:h93382meaafa953fnu53blnu2r@ds045252.mongolab.com:45252/heroku_qvt5db7v')
 db = client.get_default_database()
-
+bugsnag.configure(
+  api_key = os.environ['BUGSNAG_API_KEY'],
+  project_root = "./",
+)
 
 app = Flask(__name__)
+handle_exceptions(app)
 
-# yourlogger = logging.getLogger(__name__)
-# yourlogger.addHandler(airbrake.AirbrakeHandler())
-
-if not app.debug:
-    mail_handler = airbrake.AirbrakeHandler()
-    app.logger.addHandler(mail_handler)
 
 
 @bot.message_handler(content_types=['text'])
 def index(message):
 
-	print "message"
-	print message
-	# client = MongoClient(os.environ['MONGODB_TOKEN'])
+	try: 
+		print "message"
+		print message
+		# client = MongoClient(os.environ['MONGODB_TOKEN'])
 
-	users = db.users
+		users = db.users
 
-	possible_user = users.find({ "tid" : message.chat.id })
+		possible_user = users.find({ "tid" : message.chat.id })
 
-	
-	
-
-
-	if possible_user.count() == 0:
-		# session_id = str(message.chat).split(':')[0]
-		# client_name = str(message.chat).split(':')[1]
-
-		query = "https://aiaas.pandorabots.com/atalk/" + str(app_id) + "/" + str(botname) 
-		payload1 = {
-		'user_key' : str(user_key).encode('utf-8'),
-		"input": str(message.text).encode('utf-8')
-		}
-
-		r=requests.post(query, data = payload1)
-
-		full_bot_response = r.json()
-
-		users.insert_one(
-			{"tid": message.chat.id,
-			"session_id": full_bot_response['sessionid'], 
-			"client_name": full_bot_response['client_name'] })
-	else:
-		session_id = possible_user[0].get('session_id')
-
-		client_name = possible_user[0].get('client_name')
-
-		query = "https://aiaas.pandorabots.com/atalk/" + str(app_id) + "/" + str(botname)
-
-		payload1 = {
-		'user_key' : str(user_key).encode('utf-8'),
-		"input": str(message.text).encode('utf-8'),
-		"client_name": str(client_name).encode('utf-8'),
-		'sessionid': str(session_id).encode('utf-8')
-
-		}
-
-		r=requests.post(query, data = payload1)
-
-		full_bt_response = r.json()
+		
 		
 
-	
 
-	bot_response = full_bot_response["responses"][0]
-	print "bot resposne is"
-	# print bot_response
+		if possible_user.count() == 0:
+			# session_id = str(message.chat).split(':')[0]
+			# client_name = str(message.chat).split(':')[1]
 
-	soup = BeautifulSoup(bot_response, "lxml")
-    # partition = bot_response.partition('<img')
+			query = "https://aiaas.pandorabots.com/atalk/" + str(app_id) + "/" + str(botname) 
+			payload1 = {
+			'user_key' : str(user_key).encode('utf-8'),
+			"input": str(message.text).encode('utf-8')
+			}
 
-    
-    
-	if soup.img:
-		image_portion = soup.img.extract()['src']
-		text_portion = soup.text
+			r=requests.post(query, data = payload1)
 
-		# print image_portion
-		response = requests.get(image_portion)
-		# photo = Image.open(BytesIO(response.content))
-		# print 'size'
-		# print photo.size
-		# print photo.info
-		print 'hola'
+			full_bot_response = r.json()
 
-		print message.chat.id
+			users.insert_one(
+				{"tid": message.chat.id,
+				"session_id": full_bot_response['sessionid'], 
+				"client_name": full_bot_response['client_name'] })
+		else:
+			session_id = possible_user[0].get('session_id')
+
+			client_name = possible_user[0].get('client_name')
+
+			query = "https://aiaas.pandorabots.com/atalk/" + str(app_id) + "/" + str(botname)
+
+			payload1 = {
+			'user_key' : str(user_key).encode('utf-8'),
+			"input": str(message.text).encode('utf-8'),
+			"client_name": str(client_name).encode('utf-8'),
+			'sessionid': str(session_id).encode('utf-8')
+
+			}
+
+			r=requests.post(query, data = payload1)
+
+			full_bt_response = r.json()
+			
+
+		
+
+		bot_response = full_bot_response["responses"][0]
+		print "bot resposne is"
+		# print bot_response
+
+		soup = BeautifulSoup(bot_response, "lxml")
+	    # partition = bot_response.partition('<img')
+
+	    
+	    
+		if soup.img:
+			image_portion = soup.img.extract()['src']
+			text_portion = soup.text
+
+			# print image_portion
+			response = requests.get(image_portion)
+			# photo = Image.open(BytesIO(response.content))
+			# print 'size'
+			# print photo.size
+			# print photo.info
+			print 'hola'
+
+			print message.chat.id
 
 
-		print image_dictionary.get(image_portion) 
+			print image_dictionary.get(image_portion) 
 
-		bot.reply_to(message, text_portion)
-		bot.send_document(message.chat.id, image_dictionary.get(image_portion))
-
-
-
-	else:
-
-		bot.reply_to(message, soup.text)
-
-
-	callZendesk(message.chat, message.text)
+			bot.reply_to(message, text_portion)
+			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
 
 
 
-	# bot.polling()
+		else:
+
+			bot.reply_to(message, soup.text)
+
+
+		callZendesk(message.chat, message.text)
+	except Exception as e:
+		exc_type, exc_value, exc_traceback = sys.exc_info()
+
+		bugsnag.notify(sys.exc_info())
+	   	traceback.print_exception(exc_type, exc_value, exc_traceback)
+
+
+
+
 
 
 @app.route("/boristheanimal5423", methods=['GET', 'POST'])
 def hello():
-	print request.json
+	try:
+		print request.json
 
-	if request.json == None:
-		message_json = {
-						    "message": {
-						        "from": {
-						            "username": "dpetkevich",
-						            "id": 52132249,
-						            "first_name": "Dan",
-						            "last_name": "Petkevich"
-						        },
-						        "date": 1443741883,
-						        "chat": {
-						            "username": "dpetkevich",
-						            "id": 52132249,
-						            "first_name": "Dan",
-						            "last_name": "Petkevich"
-						        },
-						        "message_id": 21,
-						        "text": "Hi"
-						    },
-						    "update_id": 103067769
-						}
-		print json.dumps(message_json)
-		print message_json['message']
-		message = types.Message.de_json(message_json['message'])
-	else:
-		message_json = request.json['message']
-		db.messages.insert_one(request.json)
-		message = types.Message.de_json(message_json)
+		if request.json == None:
+			message_json = {
+							    "message": {
+							        "from": {
+							            "username": "dpetkevich",
+							            "id": 52132249,
+							            "first_name": "Dan",
+							            "last_name": "Petkevich"
+							        },
+							        "date": 1443741883,
+							        "chat": {
+							            "username": "dpetkevich",
+							            "id": 52132249,
+							            "first_name": "Dan",
+							            "last_name": "Petkevich"
+							        },
+							        "message_id": 21,
+							        "text": "Hi"
+							    },
+							    "update_id": 103067769
+							}
+			print json.dumps(message_json)
+			print message_json['message']
+			message = types.Message.de_json(message_json['message'])
+		else:
+			message_json = request.json['message']
+			db.messages.insert_one(request.json)
+			message = types.Message.de_json(message_json)
 
-	messages = [message]
-	print message
+		messages = [message]
+		print message
 
-	bot.process_new_messages(messages) 
-	return "Works"
+		bot.process_new_messages(messages) 
+		return "Works"
+
+	except Exception:
+		exc_type, exc_value, exc_traceback = sys.exc_info()
+
+		bugsnag.notify(sys.exc_info())
+	   	traceback.print_exception(exc_type, exc_value, exc_traceback)
 
 
-@app.errorhandler(Exception)
-def all_exception_handler(error):
-	print 'error'
-	print error
-   	return 'Error', 500
-
-
-# @app.errorhandler(Exception)
-# def internal_error():
-# 	print 'yayayayay'
-	
 
 if __name__ == "__main__":
-	app.run()
-
 	
-
+	app.run(debug=True)
+	
+	
 
    
