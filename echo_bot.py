@@ -176,6 +176,9 @@ def hello():
 		else:
 			incoming_json = request.json
 			incoming_json["created_at"] = datetime.utcnow()
+
+			print 'incoming json'
+			print incoming_json
 			
 			db.messages.insert_one(incoming_json)
 			
