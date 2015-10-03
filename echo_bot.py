@@ -17,7 +17,8 @@ import logging
 import traceback
 import bugsnag
 from bugsnag.flask import handle_exceptions
-import datetime
+
+from datetime import datetime, date, time
 
 bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
@@ -169,9 +170,12 @@ def hello():
 			print json.dumps(message_json)
 			print message_json['message']
 			message = types.Message.de_json(message_json['message'])
+
+			#delete the three lines below!!!!
+			
 		else:
 			incoming_json = request.json
-			incoming_json.append("created_at:" + datetime.utcnow())
+			incoming_json["created_at"] = datetime.utcnow()
 			
 			db.messages.insert_one(incoming_json)
 			
