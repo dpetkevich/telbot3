@@ -171,7 +171,7 @@ def hello():
 			message = types.Message.de_json(message_json['message'])
 		else:
 			incoming_json = request.json
-			incoming_json['update'].append("created_at:" + datetime.utcnow())
+			incoming_json.append("created_at:" + datetime.utcnow())
 			
 			db.messages.insert_one(incoming_json)
 			
