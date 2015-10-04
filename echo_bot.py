@@ -17,10 +17,11 @@ import logging
 import traceback
 import bugsnag
 from bugsnag.flask import handle_exceptions
+import math
 
 from datetime import datetime, date, time
 
-bot = telebot.AsyncTeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
+bot = telebot.TeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
@@ -119,19 +120,64 @@ def index(message):
 
 			print image_dictionary.get(image_portion) 
 
-			# bot.reply_to(message, text_portion)
-			bot.send_message(message.chat.id, text_portion)
+
+			
 			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
 
 
 
+		
+		
+		# end loop
+		options = soup.options
+
+		if options:
+			markup = types.ReplyKeyboardMarkup()
+			print 'list is'
+			option_list = options.text.rsplit("\n")
+
+			
+			option_list_length = len(option_list)
+			print option_list_length
+			num_rows = math.ceil(option_list_length / 3)
+			print 'num rows'
+			print num_rows
+
+			for x in range(1,int(num_rows)+1):
+				print "running loop"
+				markup.row(*option_list[(x-1)*3 : x*3])
 		else:
+			print 'in else statemetn'
+			markup = types.ReplyKeyboardHide(selective=False)
 
-			bot.send_message(message.chat.id, soup.text)
 
 
 
-		callZendesk(message.chat, message.text)
+
+			
+		soup.options.extract()
+
+			
+			
+
+			# create loop to send new message for every new line
+			# then for each item in the loop, look for items in the "options" tag and send them as keyboard markup
+		
+		for i,v in enumerate(soup.text.rsplit("\n\n")):
+			print(i)
+			print(v)
+			
+			bot.send_message(message.chat.id, v, reply_markup=markup )
+				
+
+		# 
+
+
+
+
+
+
+
 	except Exception as e:
 		exc_type, exc_value, exc_traceback = sys.exc_info()
 
