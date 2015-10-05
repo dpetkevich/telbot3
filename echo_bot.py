@@ -25,7 +25,7 @@ bot = telebot.TeleBot(os.environ['TELEGRAM_BOT_TOKEN'])
 host = 'aiaas.pandorabots.com'
 user_key = '8704f84cef67d2c4c1c487ce9aab7da2'
 app_id = '1409612152298'
-botname = 'benjamin'
+botname = os.environ['BOT_NAME']
 client = MongoClient('mongodb://heroku_qvt5db7v:h93382meaafa953fnu53blnu2r@ds045252.mongolab.com:45252/heroku_qvt5db7v')
 db = client.get_default_database()
 bugsnag.configure(
@@ -132,6 +132,8 @@ def index(message):
 		options = soup.options
 
 		if options:
+			soup.options.extract()
+
 			markup = types.ReplyKeyboardMarkup()
 			print 'list is'
 			option_list = options.text.rsplit("\n")
@@ -155,7 +157,6 @@ def index(message):
 
 
 			
-		soup.options.extract()
 
 			
 			
@@ -211,7 +212,7 @@ def hello():
 							            "last_name": "Petkevich"
 							        },
 							        "message_id": 21,
-							        "text": "Hi"
+							        "text": "Credit"
 							    },
 							    "update_id": 103067769
 							}
