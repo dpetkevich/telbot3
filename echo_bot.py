@@ -114,7 +114,7 @@ def index(message):
 			print image_dictionary.get(image_portion) 
 
 			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
-			
+
 			
 
 
@@ -127,7 +127,7 @@ def index(message):
 		if options:
 			soup.options.extract()
 
-			markup = types.ReplyKeyboardMarkup()
+			markup = types.ReplyKeyboardMarkup(one_time_keyboard = True)
 			option_list = options.text.rsplit("\n")
 
 			
