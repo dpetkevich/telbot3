@@ -152,8 +152,7 @@ def index(message):
 			# then for each item in the loop, look for items in the "options" tag and send them as keyboard markup
 		
 		for i,v in enumerate(soup.text.rsplit("\n\n")):
-			print(i)
-			print(v)
+			
 			
 			bot.send_message(message.chat.id, v, reply_markup=markup )
 				
