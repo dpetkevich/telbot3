@@ -132,7 +132,7 @@ def index(message):
 
 			
 			option_list_length = len(option_list)
-			num_rows = math.ceil(option_list_length / 3)
+			num_rows = math.ceil(float(option_list_length) / 3)
 			print 'option length'
 			print option_list_length
 			print option_list
