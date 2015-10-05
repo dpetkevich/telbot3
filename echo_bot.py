@@ -107,14 +107,7 @@ def index(message):
 			image_portion = soup.img.extract()['src']
 			text_portion = soup.text
 
-			# print image_portion
-			response = requests.get(image_portion)
-			# photo = Image.open(BytesIO(response.content))
-			# print 'size'
-			# print photo.size
-			# print photo.info
-			print 'hola'
-
+			
 			print message.chat.id
 
 
@@ -122,7 +115,6 @@ def index(message):
 
 
 			
-			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
 
 
 
@@ -171,7 +163,9 @@ def index(message):
 			bot.send_message(message.chat.id, v, reply_markup=markup )
 				
 
-		# 
+		if soup.img:
+			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
+
 
 
 
