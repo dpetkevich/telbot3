@@ -135,10 +135,13 @@ def index(message):
 			num_rows = math.ceil(option_list_length / 3)
 			print 'option length'
 			print option_list_length
+			print option_list
+			print 'num rows'
+			print num_rows
 
 			for x in range(1,int(num_rows)+1):
 				print x
-				markup.row(*option_list[(x-1)*3 : (x*3)-1])
+				markup.row(*option_list[(x-1)*3 : (x*3)])
 		else:
 			markup = types.ReplyKeyboardHide(selective=False)
 
