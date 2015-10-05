@@ -113,7 +113,8 @@ def index(message):
 
 			print image_dictionary.get(image_portion) 
 
-
+			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
+			
 			
 
 
@@ -157,8 +158,7 @@ def index(message):
 			bot.send_message(message.chat.id, v, reply_markup=markup )
 				
 
-		if soup.img:
-			bot.send_document(message.chat.id, image_dictionary.get(image_portion))
+		
 
 
 
@@ -200,7 +200,7 @@ def hello():
 							            "last_name": "Petkevich"
 							        },
 							        "message_id": 21,
-							        "text": "Credit"
+							        "text": "Hi"
 							    },
 							    "update_id": 103067769
 							}
