@@ -127,7 +127,7 @@ def index(message):
 		if options:
 			soup.options.extract()
 
-			markup = types.ReplyKeyboardMarkup(one_time_keyboard = True)
+			markup = types.ReplyKeyboardMarkup(one_time_keyboard = True, resize_keyboard = True)
 			option_list = options.text.rsplit("\n")
 
 			
