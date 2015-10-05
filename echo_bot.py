@@ -127,21 +127,16 @@ def index(message):
 			soup.options.extract()
 
 			markup = types.ReplyKeyboardMarkup()
-			print 'list is'
 			option_list = options.text.rsplit("\n")
 
 			
 			option_list_length = len(option_list)
-			print option_list_length
 			num_rows = math.ceil(option_list_length / 3)
-			print 'num rows'
-			print num_rows
+			
 
 			for x in range(1,int(num_rows)+1):
-				print "running loop"
 				markup.row(*option_list[(x-1)*3 : x*3])
 		else:
-			print 'in else statemetn'
 			markup = types.ReplyKeyboardHide(selective=False)
 
 
